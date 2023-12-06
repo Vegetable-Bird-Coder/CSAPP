@@ -193,7 +193,9 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-	return 2;
+	x = ~x;
+	x = x + 1;
+	return x;
 }
 //3
 /* 
@@ -206,7 +208,12 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-	return 2;
+	// The following code references the GPT tip
+	int sub30 = x + (~0x30 + 1);
+	int ge30 = ~(sub30 >> 31);
+	int sub39 = x + (~0x39 + 1);
+	int le39 = sub39 >> 31;
+	return ge30 & le39;
 }
 /* 
  * conditional - same as x ? y : z 
