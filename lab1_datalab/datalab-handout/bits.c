@@ -163,10 +163,12 @@ int tmin(void) {
  */
 int isTmax(int x) {	
 	int tMax = ~(1 << 31);
+	// x becomes 0 if x equals tMax, else other number
 	x = x ^ tMax;
 	// The following code references the GPT tip
+	// if x is 0, set the most significent bit to 1, else to 0
 	x = x + ~0;
-	return x >> 31;
+	return (x >> 31) & 1;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -183,7 +185,7 @@ int allOddBits(int x) {
 	x = x + 1;
 	// if x is 0, set the most significent bit to 1, else to 0
 	x = x + ~0;                                                                                           
-	return x >> 31;
+	return (x >> 31) & 1;
 }
 /* 
  * negate - return -x 
@@ -210,11 +212,11 @@ int negate(int x) {
 int isAsciiDigit(int x) {
 	// The following code references the GPT tip
 	int sub30 = x + (~0x30 + 1);
-	int ge30 = ~(sub30 >> 31);
+	int ge30 = ~((sub30 >> 31) & 1);
 	// if x is 0x39, sub39 will be 0
 	// int sub39 = x + (~0x39 + 1);
 	int sub39 = x + (~0x3A + 1);
-	int le39 = sub39 >> 31;
+	int le39 = (sub39 >> 31) & 1;
 	return ge30 & le39;
 }
 /* 
@@ -228,7 +230,7 @@ int conditional(int x, int y, int z) {
 	int minusOne = ~0;
 	int	aux = x + minusOne;
 	// if x is 0, the most significant bit is 1, else 0
-	int msb = aux >> 31;
+	int msb = (aux >> 31) & 1;
 	// if msb is 0, all bits become 1, else all bits become 0
 	int mask = msb + minusOne;
 	return (mask & y) | (~mask & z);
@@ -251,12 +253,12 @@ int isLessOrEqual(int x, int y) {
 	// pos x - pos y - 1 is neg
 	// neg x - neg y - 1 is pos
 	// neg x - neg y - 1 is neg
-	int msbX = x >> 31;
-	int msbY = y >> 31;
+	int msbX = (x >> 31) & 1;
+	int msbY = (y >> 31) & 1;
 	int diffSign = x ^ y;
 	int subY = x + (~y + 1) + (~1 + 1);
-	int leY = subY >> 31;
-	return (diffSign & msbX) || (~diffSign & leY);
+	int leY = (subY >> 31) & 1;
+	return (diffSign & msbX) | (~diffSign & leY);
 }
 //4
 /* 
@@ -268,7 +270,7 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-	return 2;
+	return (~0 + x) >> 31;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
@@ -283,6 +285,34 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
+	int isNeg = x >> 31;
+	int posX = (isNeg & (~x + 1)) | (~isNeg & x);
+	int count = 0;
+	int shift;
+
+	shift = !!(x >> 16) << 4;
+	x >>= shift;
+	count + = shift;
+
+	shift = !!(x >> 8) << 3;
+	x >>= shift;
+	count += shift;
+
+	shift = !!(x >> 4) << 2;
+	x >>= shift;
+	count += shift;
+
+	shift = !!(x >> 2) << 1;
+	x >>= shift;
+	count += shift;
+
+	shift = !!(x >> 1);
+	x >>= shift;
+	count += shift;
+
+	count += x;
+
+
 	return 0;
 }
 //float
