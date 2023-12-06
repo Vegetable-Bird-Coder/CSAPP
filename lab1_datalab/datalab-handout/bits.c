@@ -162,8 +162,11 @@ int tmin(void) {
  *   Rating: 2
  */
 int isTmax(int x) {	
-	
-	return ~(1 << 31);
+	int tMax = ~(1 << 31);
+	x = x ^ tMax;
+	// The following code references the GPT tip
+	x = x + ~0;
+	return x >> 31;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
