@@ -211,7 +211,9 @@ int isAsciiDigit(int x) {
 	// The following code references the GPT tip
 	int sub30 = x + (~0x30 + 1);
 	int ge30 = ~(sub30 >> 31);
-	int sub39 = x + (~0x39 + 1);
+	// if x is 0x39, sub39 will be 0
+	// int sub39 = x + (~0x39 + 1);
+	int sub39 = x + (~0x3A + 1);
 	int le39 = sub39 >> 31;
 	return ge30 & le39;
 }
