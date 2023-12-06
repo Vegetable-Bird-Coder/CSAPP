@@ -176,8 +176,14 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-
-	return 2;
+	int rightShift = x >> 1;
+	// x becomes -1 or other number
+	x = x ^ rightShift;
+	// x becomes 0 or other number
+	x = x + 1;
+	// if x is 0, set the most significent bit to 1, else to 0
+	x = x + ~0;                                                                                           
+	return x >> 31;
 }
 /* 
  * negate - return -x 
