@@ -225,7 +225,13 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-	return 2;
+	int minusOne = ~0;
+	int	aux = x + minusOne;
+	// if x is 0, the most significant bit is 1, else 0
+	int msb = aux >> 31;
+	// if msb is 0, all bits become 1, else all bits become 0
+	int mask = msb + minusOne;
+	return (mask & y) | (~mask & z);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -235,7 +241,22 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-	return 2;
+	// different signs, the result depends on the sign of x
+	// pos x - neg y - 1 is neg
+	// pos x - neg y - 1 is pos
+	// neg x - pos y - 1 is neg
+	// neg x - pos y - 1 is pos
+	// same signs, the result depends on the sign of sub value
+	// pos x - pos y - 1 is pos
+	// pos x - pos y - 1 is neg
+	// neg x - neg y - 1 is pos
+	// neg x - neg y - 1 is neg
+	int msbX = x >> 31;
+	int msbY = y >> 31;
+	int diffSign = x ^ y;
+	int subY = x + (~y + 1) + (~1 + 1);
+	int leY = subY >> 31;
+	return (diffSign & msbX) || (~diffSign & leY);
 }
 //4
 /* 
