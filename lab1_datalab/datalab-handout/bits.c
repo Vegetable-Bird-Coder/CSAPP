@@ -217,12 +217,8 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-    int minusOne = ~0;
-    int aux = x + minusOne;
-    // if x is 0, the most significant bit is 1, else 0
-    int msb = (aux >> 31) & 1;
-    // if msb is 0, all bits become 1, else all bits become 0
-    int mask = msb + minusOne;
+    int xIsTrue = !!x;
+    int mask = ~xIsTrue + 1;
     return (mask & y) | (~mask & z);
 }
 /*
