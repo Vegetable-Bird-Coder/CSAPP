@@ -139,6 +139,7 @@ For the problems that require you to implent floating-point operations,
  *   Rating: 1
  */
 int bitXor(int x, int y) {
+    // reference
     int notBothOne = ~(x & y);
     int notBothZero = ~(~x & ~y);
     return notBothOne & notBothZero;
@@ -162,10 +163,7 @@ int isTmax(int x) {
     int tMax = ~(1 << 31);
     // x becomes 0 if x equals tMax, else other number
     x = x ^ tMax;
-    // The following code references the GPT tip
-    // if x is 0, set the most significent bit to 1, else to 0
-    x = x + ~0;
-    return (x >> 31) & 1;
+    return !x;
 }
 /*
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -175,14 +173,10 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-    int rightShift = x >> 1;
-    // x becomes -1 or other number
-    x = x ^ rightShift;
-    // x becomes 0 or other number
-    x = x + 1;
-    // if x is 0, set the most significent bit to 1, else to 0
-    x = x + ~0;
-    return (x >> 31) & 1;
+    // reference
+    int aux = (x & (x >> 8) & (x >> 16) & (x >> 24)) & 0xaa;
+    aux += (~0xaa + 1);
+    return !aux;
 }
 /*
  * negate - return -x
