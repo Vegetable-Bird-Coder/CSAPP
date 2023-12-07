@@ -272,8 +272,13 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-    int isNeg = x >> 31;
-    int posX = (isNeg & (~x + 1)) | (~isNeg & x);
+    // reference
+    // for positive x, we need to find the most significent bit that is 1, then
+    // add the sign bit
+    // for negative x, we need to find the most significent bit that is 0, then
+    // add 1
+    int sign = x >> 31;
+    x = (sign & ~x) | (~sign & x);
     int count = 0;
     int shift;
 
@@ -299,7 +304,7 @@ int howManyBits(int x) {
 
     count += x;
 
-    return 0;
+    return count + 1;
 }
 // float
 /*
