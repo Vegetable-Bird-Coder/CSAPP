@@ -1,8 +1,8 @@
-/* 
- * CS:APP Data Lab 
- * 
+/*
+ * CS:APP Data Lab
+ *
  * <Please put your name and userid here>
- * 
+ *
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
  *
@@ -10,7 +10,7 @@
  * compiler. You can still use printf for debugging without including
  * <stdio.h>, although you might get a compiler warning. In general,
  * it's not good practice to ignore compiler warnings, but in this
- * case it's OK.  
+ * case it's OK.
  */
 
 #if 0
@@ -129,48 +129,45 @@ For the problems that require you to implent floating-point operations,
 	 *      the correct answers.
 	 */
 
-
 #endif
-	//1
-	/* 
-	 * bitXor - x^y using only ~ and & 
-	 *   Example: bitXor(4, 5) = 1
-	 *   Legal ops: ~ &
-	 *   Max ops: 14
-	 *   Rating: 1
-	 */
-	int bitXor(int x, int y) {
-		int removeZero = x & y;
-		int removeOne = (~x) & (~y);
-		return removeZoro & removeOne;
-	}
-/* 
- * tmin - return minimum two's complement integer 
+// 1
+/*
+ * bitXor - x^y using only ~ and &
+ *   Example: bitXor(4, 5) = 1
+ *   Legal ops: ~ &
+ *   Max ops: 14
+ *   Rating: 1
+ */
+int bitXor(int x, int y) {
+    int notBothOne = ~(x & y);
+    int notBothZero = ~(~x & ~y);
+    return notBothOne & notBothZero;
+}
+/*
+ * tmin - return minimum two's complement integer
  *   Legal ops: ! ~ & ^ | + << >>
  *   Max ops: 4
  *   Rating: 1
  */
-int tmin(void) {
-	return 1 << 31;
-}
-//2
+int tmin(void) { return 1 << 31; }
+// 2
 /*
  * isTmax - returns 1 if x is the maximum, two's complement number,
- *     and 0 otherwise 
+ *     and 0 otherwise
  *   Legal ops: ! ~ & ^ | +
  *   Max ops: 10
  *   Rating: 2
  */
-int isTmax(int x) {	
-	int tMax = ~(1 << 31);
-	// x becomes 0 if x equals tMax, else other number
-	x = x ^ tMax;
-	// The following code references the GPT tip
-	// if x is 0, set the most significent bit to 1, else to 0
-	x = x + ~0;
-	return (x >> 31) & 1;
+int isTmax(int x) {
+    int tMax = ~(1 << 31);
+    // x becomes 0 if x equals tMax, else other number
+    x = x ^ tMax;
+    // The following code references the GPT tip
+    // if x is 0, set the most significent bit to 1, else to 0
+    x = x + ~0;
+    return (x >> 31) & 1;
 }
-/* 
+/*
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
  *   Examples allOddBits(0xFFFFFFFD) = 0, allOddBits(0xAAAAAAAA) = 1
  *   Legal ops: ! ~ & ^ | + << >>
@@ -178,100 +175,97 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-	int rightShift = x >> 1;
-	// x becomes -1 or other number
-	x = x ^ rightShift;
-	// x becomes 0 or other number
-	x = x + 1;
-	// if x is 0, set the most significent bit to 1, else to 0
-	x = x + ~0;                                                                                           
-	return (x >> 31) & 1;
+    int rightShift = x >> 1;
+    // x becomes -1 or other number
+    x = x ^ rightShift;
+    // x becomes 0 or other number
+    x = x + 1;
+    // if x is 0, set the most significent bit to 1, else to 0
+    x = x + ~0;
+    return (x >> 31) & 1;
 }
-/* 
- * negate - return -x 
+/*
+ * negate - return -x
  *   Example: negate(1) = -1.
  *   Legal ops: ! ~ & ^ | + << >>
  *   Max ops: 5
  *   Rating: 2
  */
 int negate(int x) {
-	x = ~x;
-	x = x + 1;
-	return x;
+    x = ~x;
+    x = x + 1;
+    return x;
 }
-//3
-/* 
- * isAsciiDigit - return 1 if 0x30 <= x <= 0x39 (ASCII codes for characters '0' to '9')
- *   Example: isAsciiDigit(0x35) = 1.
- *            isAsciiDigit(0x3a) = 0.
+// 3
+/*
+ * isAsciiDigit - return 1 if 0x30 <= x <= 0x39 (ASCII codes for characters '0'
+ * to '9') Example: isAsciiDigit(0x35) = 1. isAsciiDigit(0x3a) = 0.
  *            isAsciiDigit(0x05) = 0.
  *   Legal ops: ! ~ & ^ | + << >>
  *   Max ops: 15
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-	// The following code references the GPT tip
-	int sub30 = x + (~0x30 + 1);
-	int ge30 = ~((sub30 >> 31) & 1);
-	// if x is 0x39, sub39 will be 0
-	// int sub39 = x + (~0x39 + 1);
-	int sub39 = x + (~0x3A + 1);
-	int le39 = (sub39 >> 31) & 1;
-	return ge30 & le39;
+    // The following code references the GPT tip
+    int sub30 = x + (~0x30 + 1);
+    int ge30 = ~((sub30 >> 31) & 1);
+    // if x is 0x39, sub39 will be 0
+    // int sub39 = x + (~0x39 + 1);
+    int sub39 = x + (~0x3A + 1);
+    int le39 = (sub39 >> 31) & 1;
+    return ge30 & le39;
 }
-/* 
- * conditional - same as x ? y : z 
+/*
+ * conditional - same as x ? y : z
  *   Example: conditional(2,4,5) = 4
  *   Legal ops: ! ~ & ^ | + << >>
  *   Max ops: 16
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-	int minusOne = ~0;
-	int	aux = x + minusOne;
-	// if x is 0, the most significant bit is 1, else 0
-	int msb = (aux >> 31) & 1;
-	// if msb is 0, all bits become 1, else all bits become 0
-	int mask = msb + minusOne;
-	return (mask & y) | (~mask & z);
+    int minusOne = ~0;
+    int aux = x + minusOne;
+    // if x is 0, the most significant bit is 1, else 0
+    int msb = (aux >> 31) & 1;
+    // if msb is 0, all bits become 1, else all bits become 0
+    int mask = msb + minusOne;
+    return (mask & y) | (~mask & z);
 }
-/* 
- * isLessOrEqual - if x <= y  then return 1, else return 0 
+/*
+ * isLessOrEqual - if x <= y  then return 1, else return 0
  *   Example: isLessOrEqual(4,5) = 1.
  *   Legal ops: ! ~ & ^ | + << >>
  *   Max ops: 24
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-	// different signs, the result depends on the sign of x
-	// pos x - neg y - 1 is neg
-	// pos x - neg y - 1 is pos
-	// neg x - pos y - 1 is neg
-	// neg x - pos y - 1 is pos
-	// same signs, the result depends on the sign of sub value
-	// pos x - pos y - 1 is pos
-	// pos x - pos y - 1 is neg
-	// neg x - neg y - 1 is pos
-	// neg x - neg y - 1 is neg
-	int msbX = (x >> 31) & 1;
-	int msbY = (y >> 31) & 1;
-	int diffSign = x ^ y;
-	int subY = x + (~y + 1) + (~1 + 1);
-	int leY = (subY >> 31) & 1;
-	return (diffSign & msbX) | (~diffSign & leY);
+    // different signs, the result depends on the sign of x
+    // pos x - neg y - 1 is neg
+    // pos x - neg y - 1 is pos
+    // neg x - pos y - 1 is neg
+    // neg x - pos y - 1 is pos
+    // same signs, the result depends on the sign of sub value
+    // pos x - pos y - 1 is pos
+    // pos x - pos y - 1 is neg
+    // neg x - neg y - 1 is pos
+    // neg x - neg y - 1 is neg
+    int msbX = (x >> 31) & 1;
+    int msbY = (y >> 31) & 1;
+    int diffSign = msbX ^ msbY;
+    int subY = x + (~y + 1) + (~1 + 1);
+    int leY = (subY >> 31) & 1;
+    return (diffSign & msbX) | (~diffSign & leY);
 }
-//4
-/* 
- * logicalNeg - implement the ! operator, using all of 
+// 4
+/*
+ * logicalNeg - implement the ! operator, using all of
  *              the legal operators except !
  *   Examples: logicalNeg(3) = 0, logicalNeg(0) = 1
  *   Legal ops: ~ & ^ | + << >>
  *   Max ops: 12
- *   Rating: 4 
+ *   Rating: 4
  */
-int logicalNeg(int x) {
-	return (~0 + x) >> 31;
-}
+int logicalNeg(int x) { return (~0 + x) >> 31; }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
  *  Examples: howManyBits(12) = 5
@@ -285,38 +279,37 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-	int isNeg = x >> 31;
-	int posX = (isNeg & (~x + 1)) | (~isNeg & x);
-	int count = 0;
-	int shift;
+    int isNeg = x >> 31;
+    int posX = (isNeg & (~x + 1)) | (~isNeg & x);
+    int count = 0;
+    int shift;
 
-	shift = !!(x >> 16) << 4;
-	x >>= shift;
-	count + = shift;
+    shift = !!(x >> 16) << 4;
+    x >>= shift;
+    count += shift;
 
-	shift = !!(x >> 8) << 3;
-	x >>= shift;
-	count += shift;
+    shift = !!(x >> 8) << 3;
+    x >>= shift;
+    count += shift;
 
-	shift = !!(x >> 4) << 2;
-	x >>= shift;
-	count += shift;
+    shift = !!(x >> 4) << 2;
+    x >>= shift;
+    count += shift;
 
-	shift = !!(x >> 2) << 1;
-	x >>= shift;
-	count += shift;
+    shift = !!(x >> 2) << 1;
+    x >>= shift;
+    count += shift;
 
-	shift = !!(x >> 1);
-	x >>= shift;
-	count += shift;
+    shift = !!(x >> 1);
+    x >>= shift;
+    count += shift;
 
-	count += x;
+    count += x;
 
-
-	return 0;
+    return 0;
 }
-//float
-/* 
+// float
+/*
  * float_twice - Return bit-level equivalent of expression 2*f for
  *   floating point argument f.
  *   Both the argument and result are passed as unsigned int's, but
@@ -327,10 +320,8 @@ int howManyBits(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
-unsigned float_twice(unsigned uf) {
-	return 2;
-}
-/* 
+unsigned float_twice(unsigned uf) { return 2; }
+/*
  * float_i2f - Return bit-level equivalent of expression (float) x
  *   Result is returned as unsigned int, but
  *   it is to be interpreted as the bit-level representation of a
@@ -339,10 +330,8 @@ unsigned float_twice(unsigned uf) {
  *   Max ops: 30
  *   Rating: 4
  */
-unsigned float_i2f(int x) {
-	return 2;
-}
-/* 
+unsigned float_i2f(int x) { return 2; }
+/*
  * float_f2i - Return bit-level equivalent of expression (int) f
  *   for floating point argument f.
  *   Argument is passed as unsigned int, but
@@ -354,6 +343,4 @@ unsigned float_i2f(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
-int float_f2i(unsigned uf) {
-	return 2;
-}
+int float_f2i(unsigned uf) { return 2; }
