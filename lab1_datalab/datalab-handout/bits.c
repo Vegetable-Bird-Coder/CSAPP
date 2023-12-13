@@ -318,7 +318,10 @@ int howManyBits(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
-unsigned float_twice(unsigned uf) { return 2; }
+unsigned float_twice(unsigned uf) { 
+    
+    return 2; 
+    }
 /*
  * float_i2f - Return bit-level equivalent of expression (float) x
  *   Result is returned as unsigned int, but
