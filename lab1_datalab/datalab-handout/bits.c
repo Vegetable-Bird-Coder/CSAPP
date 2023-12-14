@@ -318,10 +318,28 @@ int howManyBits(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
-unsigned float_twice(unsigned uf) { 
-    
-    return 2; 
+unsigned float_twice(unsigned uf) {
+    unsigned sign = uf & 0x80000000;
+    unsigned exp = uf & 0x7f800000;
+    unsigned frac = uf & 0x007FFFFF;
+    if (exp == 0x7f800000)
+        return uf;
+    // uf is zero or a denormalized
+    if (exp == 0) {
+        frac <<= 1;
+        // if the frac part overflows
+        if (frac & 0x00800000) {
+            exp = 0x00800000;
+            frac &= 0x007fffff;
+        }
+    } else {
+        exp += 0x00800000;
+        if (exp == 0x7f800000) { // become Nan, set frac to 0
+            frac &= 0x0;
+        }
     }
+    return sign | exp | frac;
+}
 /*
  * float_i2f - Return bit-level equivalent of expression (float) x
  *   Result is returned as unsigned int, but
