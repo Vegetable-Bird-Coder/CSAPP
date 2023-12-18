@@ -349,7 +349,43 @@ unsigned float_twice(unsigned uf) {
  *   Max ops: 30
  *   Rating: 4
  */
-unsigned float_i2f(int x) { return 2; }
+unsigned float_i2f(int x) {
+    if (x == 0)
+        return 0;
+    if (x == 0x80000000)
+        return 0xcf000000;
+
+    unsigned sign = 0;
+    if (x < 0) {
+        sign = 0x80000000;
+        x = -x;
+    }
+
+    unsigned exp = 31;
+    while (!(x & (1 << exp))) {
+        exp--;
+    }
+
+    unsigned frac;
+    if (exp <= 23) {
+        frac = ((x << (23 - exp)) & 0x7FFFFF);
+    } else { // rounding
+        unsigned extra_bits = x & ((1 << (exp - 23)) - 1);
+        x >>= (exp - 23);
+        frac = x & 0x7FFFFF;
+        if (extra_bits > (1 << (exp - 24)) ||
+            ((extra_bits == (1 << (exp - 24))) && (frac & 1))) {
+            frac++;
+            if (frac >> 23) { // mantissa overflow
+                frac = 0;
+                exp++;
+            }
+        }
+    }
+
+    exp += 127;
+    return sign | (exp << 23) | frac;
+}
 /*
  * float_f2i - Return bit-level equivalent of expression (int) f
  *   for floating point argument f.
