@@ -398,4 +398,26 @@ unsigned float_i2f(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
-int float_f2i(unsigned uf) { return 2; }
+int float_f2i(unsigned uf) {
+    int TMin = 1 << 31;
+    int exp = (uf >> 23) & 0xff;
+    unsigned frac = uf & 0x7fffff;
+
+    exp -= 127;
+    frac |= 0x800000;
+
+    if (exp > 31)
+        return TMin;
+    if (exp < 0)
+        return 0;
+
+    if (exp > 23)
+        frac <<= exp - 23;
+    else
+        frac >>= 23 - exp;
+
+    if (TMin & uf)
+        return -frac;
+    else
+        return frac;
+}
